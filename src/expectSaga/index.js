@@ -443,11 +443,11 @@ export default function expectSaga(
         }
       },
 
-      effectRejected() { },
-      effectCancelled() { },
+      effectRejected() {},
+      effectCancelled() {},
     },
 
-    logger: () => { },
+    logger: () => {},
   };
 
   const api = {
