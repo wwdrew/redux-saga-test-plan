@@ -49,8 +49,8 @@
   },
   "homepage": "https://github.com/jfairbank/redux-saga-test-plan#readme",
   "devDependencies": {
-    "eslint-import-resolver-node": "^0.3.0",
-    "eslint-plugin-prettier": "^2.6.0",
+    "eslint-import-resolver-node": "^0.3.3",
+    "eslint-plugin-prettier": "^3.1.2",
     "flow-bin": "^0.118.0",
     "gitbook-cli": "^2.3.0",
     "gitbook-plugin-advanced-emoji": "^0.2.2",
