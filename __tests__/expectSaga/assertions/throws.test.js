@@ -16,6 +16,7 @@ function* errorSaga(errorToThrow) {
   throw errorToThrow;
 }
 
+/* eslint-disable */
 function* throwInCatch() {
   try {
     yield call(myFunction);
@@ -23,6 +24,7 @@ function* throwInCatch() {
     throw e;
   }
 }
+/* eslint-enable */
 
 test('matches based on error type', () =>
   expectSaga(errorSaga, new CustomError('Error Message'))
