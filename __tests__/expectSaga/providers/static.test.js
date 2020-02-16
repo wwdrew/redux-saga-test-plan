@@ -13,6 +13,9 @@ function* saga() {
 
 test('test coverage for invalid matcher', () =>
   expectSaga(saga)
-    .provide([[{}, 'n/a'], [call(apiFunction, 21), 42]])
+    .provide([
+      [{}, 'n/a'],
+      [call(apiFunction, 21), 42],
+    ])
     .put({ type: 'DONE', payload: 43 })
     .run());

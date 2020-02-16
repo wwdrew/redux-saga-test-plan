@@ -37,9 +37,7 @@ test('warns if times out with default timeout', async () => {
   expect(warn).toHaveBeenCalledTimes(1);
 
   const [[actual]] = warn.mock.calls;
-  const expected = `Saga exceeded async timeout of ${
-    expectSaga.DEFAULT_TIMEOUT
-  }ms`;
+  const expected = `Saga exceeded async timeout of ${expectSaga.DEFAULT_TIMEOUT}ms`;
 
   expect(actual).toMatch(expected);
 });

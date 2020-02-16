@@ -21,7 +21,10 @@ function* sagaWithArray() {
 }
 
 function* sagaWithObject() {
-  const { foo: x, bar: { payload: y } } = yield all({
+  const {
+    foo: x,
+    bar: { payload: y },
+  } = yield all({
     foo: call(apiFunction),
     bar: take('Y'),
   });
@@ -37,69 +40,70 @@ test('uses provided value from `all`', () =>
     .put({ type: 'DONE', payload: 42 })
     .run());
 
-[['array', sagaWithArray], ['object', sagaWithObject]].forEach(
-  ([type, localSaga]) => {
-    describe(`with ${type}`, () => {
-      test('inner providers for `all` work', () =>
-        expectSaga(localSaga)
-          .provide({
-            call: () => 20,
-            take: () => ({ type: 'Y', payload: 22 }),
-          })
-          .put({ type: 'DONE', payload: 42 })
-          .run());
+[
+  ['array', sagaWithArray],
+  ['object', sagaWithObject],
+].forEach(([type, localSaga]) => {
+  describe(`with ${type}`, () => {
+    test('inner providers for `all` work', () =>
+      expectSaga(localSaga)
+        .provide({
+          call: () => 20,
+          take: () => ({ type: 'Y', payload: 22 }),
+        })
+        .put({ type: 'DONE', payload: 42 })
+        .run());
 
-      test('inner static providers from redux-saga/effects for `all` work', () =>
-        expectSaga(localSaga)
-          .provide([
-            [call(apiFunction), 20],
-            [take('Y'), { type: 'Y', payload: 22 }],
-          ])
-          .put({ type: 'DONE', payload: 42 })
-          .run());
+    test('inner static providers from redux-saga/effects for `all` work', () =>
+      expectSaga(localSaga)
+        .provide([
+          [call(apiFunction), 20],
+          [take('Y'), { type: 'Y', payload: 22 }],
+        ])
+        .put({ type: 'DONE', payload: 42 })
+        .run());
 
-      test('inner static providers from matchers for `all` work', () =>
-        expectSaga(localSaga)
-          .provide([
-            [m.call(apiFunction), 20],
-            [m.take('Y'), { type: 'Y', payload: 22 }],
-          ])
-          .put({ type: 'DONE', payload: 42 })
-          .run());
+    test('inner static providers from matchers for `all` work', () =>
+      expectSaga(localSaga)
+        .provide([
+          [m.call(apiFunction), 20],
+          [m.take('Y'), { type: 'Y', payload: 22 }],
+        ])
+        .put({ type: 'DONE', payload: 42 })
+        .run());
 
-      test('inner static providers use dynamic values for static providers', () =>
-        expectSaga(localSaga)
-          .provide([
-            [m.call(apiFunction), dynamic(() => 20)],
-            [m.take('Y'), dynamic(() => ({ type: 'Y', payload: 22 }))],
-          ])
-          .put({ type: 'DONE', payload: 42 })
-          .run());
+    test('inner static providers use dynamic values for static providers', () =>
+      expectSaga(localSaga)
+        .provide([
+          [m.call(apiFunction), dynamic(() => 20)],
+          [m.take('Y'), dynamic(() => ({ type: 'Y', payload: 22 }))],
+        ])
+        .put({ type: 'DONE', payload: 42 })
+        .run());
 
-      test('inner static providers dynamic values have access to effect', () =>
-        expectSaga(localSaga)
-          .provide([
-            [
-              m.call(apiFunction),
-              dynamic(({ fn }) => {
-                expect(fn).toBe(apiFunction);
-                return 20;
-              }),
-            ],
+    test('inner static providers dynamic values have access to effect', () =>
+      expectSaga(localSaga)
+        .provide([
+          [
+            m.call(apiFunction),
+            dynamic(({ fn }) => {
+              expect(fn).toBe(apiFunction);
+              return 20;
+            }),
+          ],
 
-            [
-              m.take('Y'),
-              dynamic(({ pattern }) => {
-                expect(pattern).toBe('Y');
-                return { type: 'Y', payload: 22 };
-              }),
-            ],
-          ])
-          .put({ type: 'DONE', payload: 42 })
-          .run());
-    });
-  },
-);
+          [
+            m.take('Y'),
+            dynamic(({ pattern }) => {
+              expect(pattern).toBe('Y');
+              return { type: 'Y', payload: 22 };
+            }),
+          ],
+        ])
+        .put({ type: 'DONE', payload: 42 })
+        .run());
+  });
+});
 
 test('test coverage for ALL handler', () => {
   const actual = handlers[ALL]({}, {});

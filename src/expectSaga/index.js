@@ -331,10 +331,12 @@ export default function expectSaga(
     if (typeof action._delayTime === 'number') {
       const { _delayTime } = action;
 
-      dispatchPromise.then(() => delay(_delayTime)).then(() => {
-        storeState = reducer(storeState, action);
-        notifyListeners(action);
-      });
+      dispatchPromise
+        .then(() => delay(_delayTime))
+        .then(() => {
+          storeState = reducer(storeState, action);
+          notifyListeners(action);
+        });
     } else {
       storeState = reducer(storeState, action);
       dispatchPromise.then(() => notifyListeners(action));
