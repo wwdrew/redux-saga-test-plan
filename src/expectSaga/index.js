@@ -5,7 +5,6 @@ import * as is from '@redux-saga/is';
 import * as effects from 'redux-saga/effects';
 import assign from 'object-assign';
 import { splitAt } from '../utils/array';
-import Map from '../utils/Map';
 import ArraySet from '../utils/ArraySet';
 import { warn } from '../utils/logging';
 import { delay, schedule } from '../utils/async';
@@ -444,11 +443,11 @@ export default function expectSaga(
         }
       },
 
-      effectRejected() {},
-      effectCancelled() {},
+      effectRejected() { },
+      effectCancelled() { },
     },
 
-    logger: () => {},
+    logger: () => { },
   };
 
   const api = {
